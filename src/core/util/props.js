@@ -4,6 +4,7 @@ import { warn } from './debug'
 import { observe, observerState } from '../observer/index'
 import {
   hasOwn,
+  extend,
   isObject,
   hyphenate,
   capitalize,
@@ -35,8 +36,13 @@ export function validateProp (
     }
   }
   // check default value
-  if (value === undefined) {
-    value = getPropDefaultValue(vm, prop, key)
+  if (value === undefined || isPlainObject(value)) {
+    var defaultValue = getPropDefaultValue(vm, prop, key)
+    if (value && isPlainObject(defaultValue)) {
+      value = extend(defaultValue, value)
+    } else {
+      value = defaultValue
+    }
     // since the default value is a fresh copy,
     // make sure to observe it.
     const prevShouldConvert = observerState.shouldConvert
