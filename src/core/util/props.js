@@ -26,7 +26,7 @@ export function validateProp (
 ): any {
   const prop = propOptions[key]
   const absent = !hasOwn(propsData, key)
-  let value = propsData[key]
+  let value: any = propsData[key]
   // handle boolean props
   if (isType(Boolean, prop.type)) {
     if (absent && !hasOwn(prop, 'default')) {
@@ -37,7 +37,7 @@ export function validateProp (
   }
   // check default value
   if (value === undefined || isPlainObject(value)) {
-    var defaultValue = getPropDefaultValue(vm, prop, key)
+    const defaultValue = getPropDefaultValue(vm, prop, key)
     if (value && isPlainObject(defaultValue)) {
       value = extend(defaultValue, value)
     } else {
